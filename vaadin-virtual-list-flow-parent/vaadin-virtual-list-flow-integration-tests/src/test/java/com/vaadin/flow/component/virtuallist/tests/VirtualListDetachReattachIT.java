@@ -15,7 +15,6 @@
  */
 package com.vaadin.flow.component.virtuallist.tests;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -24,11 +23,10 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.vaadin.flow.testutil.TestPath;
 import com.vaadin.tests.AbstractComponentIT;
-
-import elemental.json.JsonArray;
-import elemental.json.JsonObject;
 
 @TestPath("vaadin-virtual-list/detach-reattach")
 public class VirtualListDetachReattachIT extends AbstractComponentIT {
@@ -135,18 +133,12 @@ public class VirtualListDetachReattachIT extends AbstractComponentIT {
     }
 
     private void assertItemsArePresent(WebElement list, int length) {
-        JsonArray items = VirtualListHelpers.getItems(driver, list);
-        Assert.assertEquals(length, items.length());
-        for (int i = 0; i < items.length(); i++) {
-            JsonObject obj = items.getObject(i);
+        ArrayNode items = VirtualListHelpers.getItems(driver, list);
+        Assert.assertEquals(length, items.size());
+        for (int i = 0; i < items.size(); i++) {
+            ObjectNode obj = (ObjectNode) items.get(i);
             Assert.assertEquals("Person " + (i + 1),
-                    getPropertyString(obj, "label"));
+                    VirtualListHelpers.getPropertyString(obj, "label"));
         }
-    }
-
-    private String getPropertyString(JsonObject json, String propertyName) {
-        var keyForProperty = Arrays.stream(json.keys())
-                .filter(key -> key.endsWith(propertyName)).findFirst().get();
-        return json.getString(keyForProperty);
     }
 }

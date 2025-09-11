@@ -25,15 +25,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.internal.JsonUtils;
+import com.vaadin.flow.internal.JacksonUtils;
 import com.vaadin.flow.server.VaadinSession;
-
-import elemental.json.JsonArray;
-import elemental.json.impl.JsonUtil;
 
 public class DialogChildrenTest {
 
@@ -207,10 +205,15 @@ public class DialogChildrenTest {
                 .collect(Collectors.toList());
 
         // Get the virtualChildNodeIds property from the dialog as a JsonArray
-        var jsonArrayOfIds = (JsonArray) JsonUtil
-                .parse(dialog.getElement().getProperty("virtualChildNodeIds"));
+        ArrayNode jsonArrayOfIds;
+        try {
+            jsonArrayOfIds = (ArrayNode) JacksonUtils.getMapper().readTree(
+                    dialog.getElement().getProperty("virtualChildNodeIds"));
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
-        var virtualChildNodeIds = JsonUtils.numberStream(jsonArrayOfIds)
+        var virtualChildNodeIds = JacksonUtils.numberStream(jsonArrayOfIds)
                 .mapToInt(i -> (int) i).boxed().collect(Collectors.toList());
 
         Assert.assertEquals(childIds, virtualChildNodeIds);

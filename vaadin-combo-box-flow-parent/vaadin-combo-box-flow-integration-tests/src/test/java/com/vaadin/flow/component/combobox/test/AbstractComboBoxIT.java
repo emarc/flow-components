@@ -30,8 +30,6 @@ import com.vaadin.flow.component.combobox.testbench.ComboBoxElement;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.tests.AbstractComponentIT;
 
-import elemental.json.JsonObject;
-
 @Ignore
 public class AbstractComboBoxIT extends AbstractComponentIT {
 
@@ -61,16 +59,14 @@ public class AbstractComboBoxIT extends AbstractComponentIT {
     protected void assertLoadedItemsCount(String message, int expectedCount,
             ComboBoxElement comboBox) {
         Assert.assertEquals(message, expectedCount,
-                getLoadedItems(comboBox).size());
+                getLoadedItemsCount(comboBox));
     }
 
     // Gets all the loaded json items, but they are not necessarily rendered
-    protected List<JsonObject> getLoadedItems(ComboBoxElement comboBox) {
-        List<JsonObject> list = (List<JsonObject>) executeScript(
-                "return arguments[0].filteredItems.filter("
-                        + "item => !(item instanceof window.Vaadin.ComboBoxPlaceholder));",
+    protected long getLoadedItemsCount(ComboBoxElement comboBox) {
+        return (long) executeScript("return arguments[0].filteredItems.filter("
+                + "item => !(item instanceof window.Vaadin.ComboBoxPlaceholder)).length;",
                 comboBox);
-        return list;
     }
 
     protected void assertRendered(ComboBoxElement comboBox, String innerHTML) {

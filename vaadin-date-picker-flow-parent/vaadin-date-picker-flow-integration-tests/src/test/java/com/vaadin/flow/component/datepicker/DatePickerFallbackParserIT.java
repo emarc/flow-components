@@ -21,13 +21,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.vaadin.flow.component.datepicker.testbench.DatePickerElement;
+import com.vaadin.flow.internal.JacksonUtils;
 import com.vaadin.flow.testutil.TestPath;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.tests.AbstractComponentIT;
-
-import elemental.json.Json;
-import elemental.json.JsonObject;
 
 @TestPath("vaadin-date-picker/fallback-parser")
 public class DatePickerFallbackParserIT extends AbstractComponentIT {
@@ -95,18 +94,19 @@ public class DatePickerFallbackParserIT extends AbstractComponentIT {
         Assert.assertEquals("ValueChangeEvent should be fired only once", 1,
                 records.size());
 
-        JsonObject record = Json.parse(records.get(0).getText());
+        JsonNode record = JacksonUtils.readTree(records.get(0).getText());
 
         Assert.assertTrue("eventFromClient should be true",
-                record.getBoolean("eventFromClient"));
+                record.get("eventFromClient").asBoolean());
         Assert.assertEquals("eventOldValue should contain old value",
-                expectedOldValue, record.getString("eventOldValue"));
+                expectedOldValue, record.get("eventOldValue").asText());
         Assert.assertEquals("eventNewValue should contain new value",
-                expectedNewValue, record.getString("eventNewValue"));
+                expectedNewValue, record.get("eventNewValue").asText());
         Assert.assertEquals("componentValue should contain new value",
-                expectedNewValue, record.getString("componentValue"));
+                expectedNewValue, record.get("componentValue").asText());
         Assert.assertEquals("componentValueProperty should contain new value",
-                expectedNewValue, record.getString("componentValueProperty"));
+                expectedNewValue,
+                record.get("componentValueProperty").asText());
 
         $("button").id("clear-value-change-log").click();
     }

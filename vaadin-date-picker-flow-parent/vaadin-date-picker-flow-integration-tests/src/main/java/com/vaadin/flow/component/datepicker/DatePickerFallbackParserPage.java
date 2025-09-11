@@ -17,13 +17,12 @@ package com.vaadin.flow.component.datepicker;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.data.binder.Result;
+import com.vaadin.flow.internal.JacksonUtils;
 import com.vaadin.flow.router.Route;
-
-import elemental.json.Json;
-import elemental.json.JsonObject;
 
 @Route("vaadin-date-picker/fallback-parser")
 public class DatePickerFallbackParserPage extends Div {
@@ -43,7 +42,7 @@ public class DatePickerFallbackParserPage extends Div {
         valueChangeLog.setId("value-change-log");
 
         datePicker.addValueChangeListener(event -> {
-            JsonObject record = Json.createObject();
+            ObjectNode record = JacksonUtils.createObjectNode();
             record.put("eventFromClient", event.isFromClient());
             record.put("eventOldValue", formatDate(event.getOldValue()));
             record.put("eventNewValue", formatDate(event.getValue()));

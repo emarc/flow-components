@@ -17,9 +17,7 @@ import org.junit.Test;
 
 import com.vaadin.flow.component.spreadsheet.SheetImageWrapper;
 import com.vaadin.flow.component.spreadsheet.Spreadsheet;
-
-import elemental.json.impl.JreJsonObject;
-import elemental.json.impl.JsonUtil;
+import com.vaadin.flow.internal.JacksonUtils;
 
 /**
  * Tests for conditional formatting
@@ -145,7 +143,7 @@ public class ConditionalFormatterTest {
 
     private static void assertCellHasStyle(Spreadsheet sheet, Cell cell) {
 
-        var styles = (JreJsonObject) JsonUtil.parse(
+        var styles = JacksonUtils.readTree(
                 sheet.getElement().getProperty("conditionalFormattingStyles"));
         var cellFormattingIndex = sheet.getConditionalFormatter()
                 .getCellFormattingIndex(cell);
@@ -153,6 +151,6 @@ public class ConditionalFormatterTest {
         Assert.assertEquals(1, cellFormattingIndex.size());
         var formattingIndex = cellFormattingIndex.stream().findFirst()
                 .orElse(-1).toString();
-        Assert.assertNotNull(styles.get(formattingIndex));
+        Assert.assertTrue(styles.has(formattingIndex));
     }
 }

@@ -443,7 +443,7 @@ public class LazyLoadingIT extends AbstractComboBoxIT {
 
         Assert.assertTrue(
                 "First item should not be loaded after scrolling down enough",
-                getLoadedItems(beanBox).size() < scrollIndex);
+                getLoadedItemsCount(beanBox) < scrollIndex);
 
         scrollToItem(beanBox, 0);
         waitUntilTextInContent(beanBox, "Person 0");

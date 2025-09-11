@@ -246,18 +246,18 @@ public class ComboBoxIT extends AbstractComboBoxIT {
         scrollToElement(comboBox);
 
         Assert.assertEquals("No items should be loaded initially.", 0,
-                getLoadedItems(comboBox).size());
+                getLoadedItemsCount(comboBox));
 
         comboBox.openPopup();
 
         Assert.assertEquals(
                 "First page should be loaded after opening overlay.", 50,
-                getLoadedItems(comboBox).size());
+                getLoadedItemsCount(comboBox));
         assertRendered(comboBox);
 
         scrollToItem(comboBox, 50);
         Assert.assertEquals("Second page should be loaded after scrolling.",
-                100, getLoadedItems(comboBox).size());
+                100, getLoadedItemsCount(comboBox));
     }
 
     private void assertRendered(ComboBoxElement comboBox) {

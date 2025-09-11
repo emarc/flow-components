@@ -228,7 +228,7 @@ public class FilteringIT extends AbstractComboBoxIT {
     private void assertItemsNotLoaded() {
         try {
             waitUntil(driver -> {
-                if (getLoadedItems(box).size() > 0) {
+                if (getLoadedItemsCount(box) > 0) {
                     Assert.fail("Expected no items to be loaded when "
                             + "opening the ComboBox with empty filter.");
                 }
