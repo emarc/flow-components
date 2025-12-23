@@ -1,0 +1,46 @@
+/**
+ * Theme styles for GridLayout.
+ *
+ * These styles target elements with the .vaadin-grid-layout class
+ * and apply theme spacing, margin, and padding variables.
+ *
+ * Uses Lumo spacing tokens (--lumo-space-*) which are also available
+ * in Aura theme for compatibility. Fallback values are provided for
+ * environments where theme variables are not available.
+ *
+ * Custom CSS variables for overriding defaults:
+ * - --vaadin-grid-layout-margin: Override margin value
+ * - --vaadin-grid-layout-padding: Override padding value
+ * - --vaadin-grid-layout-gap: Override default spacing gap
+ */
+
+/* Margin - uses theme variable with sensible fallback */
+.vaadin-grid-layout[theme~="margin"] {
+  margin: var(--vaadin-grid-layout-margin, var(--lumo-space-m, 1rem));
+}
+
+/* Padding - uses theme variable with sensible fallback */
+.vaadin-grid-layout[theme~="padding"] {
+  padding: var(--vaadin-grid-layout-padding, var(--lumo-space-m, 1rem));
+}
+
+/* Spacing variants - each with fallback values */
+.vaadin-grid-layout[theme~="spacing-xs"] {
+  gap: var(--lumo-space-xs, 0.25rem);
+}
+
+.vaadin-grid-layout[theme~="spacing-s"] {
+  gap: var(--lumo-space-s, 0.5rem);
+}
+
+.vaadin-grid-layout[theme~="spacing"] {
+  gap: var(--vaadin-grid-layout-gap, var(--lumo-space-m, 1rem));
+}
+
+.vaadin-grid-layout[theme~="spacing-l"] {
+  gap: var(--lumo-space-l, 1.5rem);
+}
+
+.vaadin-grid-layout[theme~="spacing-xl"] {
+  gap: var(--lumo-space-xl, 2.5rem);
+}
